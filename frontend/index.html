@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishOpus - Template-Based Generator</title>
+    
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ✅ AUDIO ELEMENTS (Play once, no loop) -->
+    <audio id="splash-audio" preload="auto">
+        <source src="assets/splash.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="download-audio" preload="auto">
+        <source src="assets/download.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ✅ SPLASH SCREEN (15 SEC, Modern Loading Line Animation) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <img src="assets/logo.png" alt="KrishOpus" class="splash-logo">
+            <div class="splash-bottom">
+                <p class="splash-text">KrishOpus is loading...</p>
+                <div class="loading-line">
+                    <div class="loading-line-inner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        
+        <!-- HEADER -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <img src="assets/logo.png" alt="KrishOpus" class="header-logo">
+                        <span class="logo-text">KrishOpus</span>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <a href="assets/instructions.pdf" target="_blank" class="btn-tutorial">
+                            <span>📖</span>
+                            <span>How to Use</span>
+                        </a>
+                        <button id="video-btn" class="btn-tutorial">
+                            <span>🎥</span>
+                            <span>Watch Video</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        AI Assignment Generator<br>
+                        <span class="gradient-text">Template-Based System</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Upload your DOCX template + Enter topic & subject = Instant filled assignment
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ✅ DISCLAIMER SECTION (800px width to match form) -->
+        <section class="disclaimer-section">
+            <div class="container">
+                <div class="disclaimer-box-standalone">
+                    <div class="disclaimer-icon">⚠️</div>
+                    <div class="disclaimer-content">
+                        <strong>Important Notice:</strong>
+                        <p><strong>KrishOpus can make mistakes.</strong></p>
+                        <p>Manual editing and alignment is required after generation. You must fill in your personal details (Name, Register Number, Year/Sec, etc.) in the downloaded document.</p>
+                        <p><strong>Always upload your template in DOCX format only.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GENERATOR SECTION -->
+        <section class="generator-section" id="generator">
+            <div class="container">
+                <div class="generator-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Generate Assignment</h2>
+                        <p class="card-subtitle">3 Simple Inputs: Template + Topic + Subject</p>
+                    </div>
+
+                    <!-- FORM -->
+                    <form id="assignment-form" class="assignment-form">
+                        <div class="form-group">
+                            <label for="template" class="form-label">
+                                1. Upload Template
+                                <span class="required">* (REQUIRED)</span>
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input 
+                                    type="file" 
+                                    id="template" 
+                                    name="template" 
+                                    class="file-input" 
+                                    accept=".docx"
+                                    required
+                                >
+                                <label for="template" class="file-label">
+                                    <span class="file-icon">📄</span>
+                                    <span class="file-text">Choose DOCX template</span>
+                                </label>
+                                <div id="file-name" class="file-name"></div>
+                            </div>
+                            <small class="form-hint">Template with marks allocation table</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="topic" class="form-label">
+                                2. Assignment Topic
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="topic" 
+                                name="topic" 
+                                class="form-input" 
+                                placeholder="e.g., Enhancing Cybersecurity in Navigation Systems"
+                                required
+                            >
+                            <small class="form-hint">Main topic for your assignment</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject" class="form-label">
+                                3. Subject
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="subject" 
+                                name="subject" 
+                                class="form-input" 
+                                placeholder="e.g., Agile Development Methodology"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="word-count" class="form-label">
+                                Word Count (Optional)
+                            </label>
+                            <select id="word-count" name="word_count" class="form-select">
+                                <option value="1500">1500 words</option>
+                                <option value="2000">2000 words</option>
+                                <option value="3000" selected>3000 words</option>
+                                <option value="4000">4000 words</option>
+                                <option value="5000">5000 words</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="generate-btn">
+                            <span class="btn-text">🚀 Generate Assignment</span>
+                            <span class="btn-loader"></span>
+                        </button>
+                    </form>
+
+                    <div id="progress-section" class="progress-section" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <p class="progress-text" id="progress-text">Initializing...</p>
+                    </div>
+
+                    <div id="preview-section" class="preview-section" style="display: none;">
+                        <div class="preview-header">
+                            <h3 class="preview-title">📄 Preview Your Assignment</h3>
+                            <p class="preview-subtitle">Review the generated content. Click "Refine with AI" to make changes via chat.</p>
+                        </div>
+                        
+                        <div id="sections-container" class="sections-container"></div>
+                        
+                        <div class="preview-actions">
+                            <button id="refine-btn" class="btn-refine">
+                                💬 Refine with AI Chat
+                            </button>
+                            <button id="finalize-btn" class="btn-finalize">
+                                ✅ Looks Good! Download Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="chat-section" class="chat-section" style="display: none;">
+                        <div class="chat-header">
+                            <h3 class="chat-title">💬 AI Refinement Chat</h3>
+                            <p class="chat-subtitle">Tell the AI how to improve specific sections</p>
+                        </div>
+                        
+                        <div id="chat-messages" class="chat-messages">
+                            <div class="chat-message assistant">
+                                <div class="chat-message-label">🤖 AI Assistant</div>
+                                <div class="chat-message-text">
+                                    Hello! I've generated your assignment. How can I help refine it?
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <input 
+                                type="text" 
+                                id="chat-input" 
+                                class="chat-input" 
+                                placeholder='Type your request, e.g., "Change conclusion more detailed"'
+                            >
+                            <button id="chat-send-btn" class="chat-send-btn">Send</button>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem; text-align: center;">
+                            <button id="back-to-preview-btn" class="btn-secondary">
+                                ← Back to Preview
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="result-section" class="result-section" style="display: none;">
+                        <div class="result-success">
+                            <div class="success-icon">✓</div>
+                            <h3 class="success-title">Assignment Ready!</h3>
+                            <p class="success-message" id="success-message"></p>
+                            
+                            <div class="result-actions">
+                                <a href="#" id="download-link" class="btn-download" download>
+                                    📥 Download Assignment
+                                </a>
+                                <button id="generate-another" class="btn-secondary">
+                                    Generate Another
+                                </button>
+                            </div>
+                            
+                            <div class="reminder-box">
+                                <strong>📝 Remember:</strong> Fill in your personal details in the document!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="error-section" class="error-section" style="display: none;">
+                        <div class="error-icon">✕</div>
+                        <h3 class="error-title">Generation Failed</h3>
+                        <p class="error-message" id="error-message"></p>
+                        <button id="retry-btn" class="btn-secondary">Try Again</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div id="video-modal" class="video-modal">
+            <div class="video-modal-content">
+                <button id="video-close" class="video-close">&times;</button>
+                <iframe 
+                    id="video-iframe" 
+                    width="100%" 
+                    height="500" 
+                    frameborder="0" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <div class="footer-brand">
+                            <img src="assets/footer-logo.png" alt="KrishOpus" class="footer-logo">
+                            <span class="footer-brand-text">KrishOpus</span>
+                        </div>
+                    </div>
+                    <div class="footer-right">
+                        <p>Powered by Groq + Llama 3.3 70B</p>
+                        <p>&copy; 2025 KrishOpus</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

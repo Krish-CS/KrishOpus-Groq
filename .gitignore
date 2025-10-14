@@ -1,0 +1,90 @@
+# ==========================================
+# ENVIRONMENT & SECRETS
+# ==========================================
+.env
+.env.*
+!.env.example
+*.env
+
+# ==========================================
+# PYTHON CACHE
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ==========================================
+# BACKEND TEMPORARY FILES
+# ==========================================
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/outputs/*
+!backend/outputs/.gitkeep
+backend/output/*
+!backend/output/.gitkeep
+backend/templates/*
+!backend/templates/.gitkeep
+
+# ==========================================
+# CHROMADB (Vector Database)
+# ==========================================
+backend/chroma_db/*
+!backend/chroma_db/.gitkeep
+
+# ==========================================
+# ROOT TEMP DIRECTORIES
+# ==========================================
+outputs/*
+!outputs/.gitkeep
+temp/*
+!temp/.gitkeep
+
+# ==========================================
+# GENERATED DOCUMENTS
+# ==========================================
+*.docx
+!backend/templates/*.docx
+
+# ==========================================
+# IDE & EDITORS
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ==========================================
+# NODE MODULES (if you add frontend build later)
+# ==========================================
+node_modules/
+frontend/node_modules/
+
+# ==========================================
+# LOGS
+# ==========================================
+*.log
+logs/
+
+# ==========================================
+# OS FILES
+# ==========================================
+Thumbs.db
+.DS_Store
+
+# ==========================================
+# PYTEST & COVERAGE
+# ==========================================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================================
+# BUILD & DISTRIBUTION
+# ==========================================
+build/
+dist/
+*.egg-info/
