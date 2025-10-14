@@ -1,5 +1,5 @@
 # ========================================
-# KRISHOPUS-GROQ DEPENDENCIES (OPTIMIZED)
+# KRISHOPUS-GROQ DEPENDENCIES (FIXED)
 # ========================================
 
 # Core Framework
@@ -7,14 +7,14 @@ fastapi==0.115.0
 uvicorn[standard]==0.32.0
 python-multipart==0.0.12
 
-# Groq API
-groq==0.11.0
+# Groq API (Compatible version)
+groq==0.9.0
 
 # Document Processing
 python-docx==1.1.2
 python-dotenv==1.0.1
 
-# HTTP/CORS (Pre-built wheels available)
+# HTTP/CORS
 pydantic==2.9.2
 pydantic-settings==2.6.0
 
