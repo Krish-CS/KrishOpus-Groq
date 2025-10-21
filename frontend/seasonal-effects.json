@@ -1,0 +1,16 @@
+{
+  "new_year": {
+    "enabled": false,
+    "start_month": 9,
+    "start_day": 21,
+    "end_month": 12,
+    "end_day": 31,
+    "message": "🎉 Happy New Year 2026! 🎊",
+    "confetti_style": "fireworks"
+  },
+  "feedback": {
+    "enabled": true,
+    "youtube_url": "https://youtu.be/-RkfhTlgBnE?si=faOCDjVxBBud5ato",
+    "show_after_generation": true
+  }
+}

@@ -1,11 +1,12 @@
 /**
- * KrishOpus Frontend v4.0 - COMPLETE & PERFECT
+ * KrishOpus Frontend v4.0 - COMPLETE & PERFECT + SEASONAL EFFECTS
  * ✅ All Requirements Satisfied
  * ✅ Audio plays ONCE (full duration)
  * ✅ 100% Opus Backend Compatible
+ * ✅ Professional New Year Modal + Themed Feedback Popup
  */
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://krishopus.onrender.com';
 
 let currentDocumentId = null;
 let currentSections = {};
@@ -13,6 +14,210 @@ let currentTopic = '';
 let currentSubject = '';
 let isProcessing = false;
 let audioInitialized = false;
+
+// ========================================
+// SEASONAL EFFECTS & FEEDBACK CONFIGURATION
+// ========================================
+let seasonalConfig = null;
+
+// Load seasonal effects configuration
+async function loadSeasonalConfig() {
+    try {
+        const response = await fetch('./seasonal-effects.json');
+        seasonalConfig = await response.json();
+        checkAndApplySeasonalEffects();
+    } catch (error) {
+        console.log('No seasonal effects configured');
+    }
+}
+
+// Check if current date matches seasonal event
+function checkAndApplySeasonalEffects() {
+    if (!seasonalConfig) return;
+    
+    const today = new Date();
+    const currentMonth = today.getMonth(); // 0 = January
+    const currentDay = today.getDate();
+    
+    // Check New Year
+    if (seasonalConfig.new_year && seasonalConfig.new_year.enabled) {
+        const ny = seasonalConfig.new_year;
+        if (currentMonth === ny.start_month && 
+            currentDay >= ny.start_day && 
+            currentDay <= ny.end_day) {
+            applyNewYearEffects(ny);
+        }
+    }
+}
+
+// Apply New Year effects - PROFESSIONAL MODAL VERSION
+function applyNewYearEffects(config) {
+    console.log('🎉 Applying New Year effects!');
+    
+    // Create professional modal
+    const modal = document.createElement('div');
+    modal.id = 'new-year-modal';
+    modal.className = 'new-year-modal';
+    modal.innerHTML = `
+        <div class="new-year-modal-content">
+            <!-- Animated Fireworks/Chakras in Corners -->
+            <div class="firework firework-tl"></div>
+            <div class="firework firework-tr"></div>
+            <div class="firework firework-bl"></div>
+            <div class="firework firework-br"></div>
+            
+            <!-- Content -->
+            <div class="new-year-emoji">🎆</div>
+            <h1 class="new-year-title">HAPPY NEW YEAR</h1>
+            <h2 class="new-year-subtitle">2026</h2>
+            <p class="new-year-message">
+                ${config.message || 'Wishing you a year filled with success, joy, and endless possibilities!'}
+            </p>
+            <button class="new-year-close-btn" onclick="closeNewYearModal()">
+                Enter Site ✨
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Show modal after splash screen (wait 500ms)
+    setTimeout(() => {
+        modal.classList.add('show');
+        
+        // Trigger confetti in background
+        triggerNewYearConfetti();
+    }, 500);
+}
+
+// Close New Year modal
+window.closeNewYearModal = function() {
+    const modal = document.getElementById('new-year-modal');
+    if (modal) {
+        modal.style.animation = 'fadeOut 0.5s ease';
+        setTimeout(() => {
+            modal.remove();
+        }, 500);
+    }
+};
+
+// New Year specific confetti (more intense than regular)
+function triggerNewYearConfetti() {
+    const canvas = confettiCanvas;
+    const ctx = canvas.getContext('2d');
+    
+    canvas.style.display = 'block';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const confetti = [];
+    const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+    const emojis = ['🎉', '🎊', '⭐', '✨', '🎆', '🎇', '💫'];
+    
+    // Create 200 confetti pieces for New Year (more than regular)
+    for (let i = 0; i < 200; i++) {
+        confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 8 + 3,
+            d: Math.random() * 4 + 1,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            emoji: emojis[Math.floor(Math.random() * emojis.length)],
+            tilt: Math.random() * 10 - 10,
+            tiltAngleIncremental: Math.random() * 0.1 + 0.05,
+            tiltAngle: 0,
+            useEmoji: Math.random() > 0.7 // 30% chance of emoji
+        });
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        confetti.forEach((c, index) => {
+            if (c.useEmoji) {
+                ctx.font = `${c.r * 3}px Arial`;
+                ctx.fillText(c.emoji, c.x + c.tilt, c.y);
+            } else {
+                ctx.beginPath();
+                ctx.lineWidth = c.r / 2;
+                ctx.strokeStyle = c.color;
+                ctx.moveTo(c.x + c.tilt + c.r, c.y);
+                ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r);
+                ctx.stroke();
+            }
+            
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
+            c.tilt = Math.sin(c.tiltAngle - index / 3) * 15;
+            
+            if (c.y > canvas.height) {
+                confetti.splice(index, 1);
+            }
+        });
+        
+        if (confetti.length > 0) {
+            requestAnimationFrame(draw);
+        } else {
+            canvas.style.display = 'none';
+        }
+    }
+    
+    draw();
+}
+
+// Show feedback popup (YouTube link) - THEMED VERSION
+function showFeedbackPopup() {
+    if (!seasonalConfig || !seasonalConfig.feedback || !seasonalConfig.feedback.enabled) {
+        return;
+    }
+    
+    const youtubeUrl = seasonalConfig.feedback.youtube_url;
+    
+    const popup = document.createElement('div');
+    popup.id = 'feedback-popup';
+    popup.className = 'feedback-popup';
+    popup.innerHTML = `
+        <div class="feedback-content">
+            <button class="feedback-close" onclick="closeFeedbackPopup()">&times;</button>
+            <div class="youtube-logo">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="white"/>
+                </svg>
+            </div>
+            <h2>Love KrishOpus? 💙</h2>
+            <p>Your feedback helps us create better experiences!</p>
+            <a href="${youtubeUrl}" target="_blank" class="feedback-youtube-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z" fill="currentColor"/>
+                </svg>
+                Share Your Feedback
+            </a>
+        </div>
+    `;
+    
+    document.body.appendChild(popup);
+    
+    // Animate in
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 500);
+    
+    // Auto-hide after 20 seconds
+    setTimeout(() => {
+        closeFeedbackPopup();
+    }, 20000);
+}
+
+// Close feedback popup
+window.closeFeedbackPopup = function() {
+    const popup = document.getElementById('feedback-popup');
+    if (popup) {
+        popup.classList.remove('show');
+        setTimeout(() => {
+            popup.remove();
+        }, 300);
+    }
+};
 
 // ========================================
 // DOM ELEMENTS
@@ -63,6 +268,9 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 // ========================================
 window.addEventListener('DOMContentLoaded', () => {
     console.log('✅ KrishOpus v4.0 Loading...');
+    
+    // ✅ Load seasonal effects first
+    loadSeasonalConfig();
     
     // ✅ FIX: Audio plays ONCE (no loop) on user interaction
     const playAudioOnce = () => {
@@ -154,7 +362,7 @@ function setupEventListeners() {
     // Video modal
     videoBtn.addEventListener('click', () => {
         videoModal.classList.add('show');
-        videoIframe.src = 'https://youtu.be/-RkfhTlgBnE?si=faOCDjVxBBud5ato'; // Replace with your video ID
+        videoIframe.src = 'https://youtu.be/-RkfhTlgBnE?si=faOCDjVxBBud5ato';
     });
     
     videoClose.addEventListener('click', () => {
@@ -176,7 +384,7 @@ async function checkBackend() {
         const data = await response.json();
         console.log('✅ Backend:', data);
     } catch (error) {
-        console.warn('⚠️ Backend not reachable. Make sure it\'s running on port 8000');
+        console.warn('⚠️ Backend not reachable. Make sure it\'s running');
     }
 }
 
@@ -513,6 +721,11 @@ function showDownload(result) {
     };
     
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    // Show feedback popup when download button appears
+    setTimeout(() => {
+        showFeedbackPopup();
+    }, 1500);
 }
 
 // ========================================
@@ -606,8 +819,8 @@ console.log(`
 ║    🎓 KrishOpus v4.0 - PERFECT           ║
 ║    ✅ All Requirements Complete          ║
 ║    ✅ Audio plays ONCE (no loop)         ║
-║    ✅ Disclaimer width = 800px           ║
-║    ✅ Dots positioned for logo scale     ║
-║    ✅ 100% Opus Backend Compatible       ║
+║    ✅ Professional New Year Modal        ║
+║    ✅ Themed Feedback Popup              ║
+║    ✅ 100% Backend Compatible            ║
 ╚═══════════════════════════════════════════╝
 `);
