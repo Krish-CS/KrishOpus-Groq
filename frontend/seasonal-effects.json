@@ -1,6 +1,6 @@
 {
   "new_year": {
-    "enabled": true,
+    "enabled": false,
     "start_month": 9,
     "start_day": 21,
     "end_month": 12,
