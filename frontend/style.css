@@ -1726,7 +1726,7 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 }
 
 /* ========================================
-   SERVER DELAY WARNING POPUP (FINAL COMPACT)
+   SERVER DELAY WARNING POPUP (OPTIMIZED SIZE)
    ======================================== */
 
 .server-delay-modal {
@@ -1748,26 +1748,26 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 
 .server-delay-content {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(48, 213, 200, 0.4), 0 0 0 3px rgba(48, 213, 200, 0.2);
-    width: 360px;
+    width: 380px;
     position: relative;
     text-align: center;
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .server-delay-icon {
-    font-size: 36px;
-    margin-bottom: 8px;
+    font-size: 42px;
+    margin-bottom: 10px;
     animation: pulse 2s infinite;
     filter: drop-shadow(0 3px 10px rgba(255, 255, 255, 0.4));
 }
 
 .server-delay-content h2 {
     color: white;
-    font-size: 1.125rem;
-    margin-bottom: 6px;
+    font-size: 1.25rem;
+    margin-bottom: 8px;
     font-weight: 700;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     letter-spacing: -0.3px;
@@ -1775,18 +1775,18 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 
 .server-delay-content > p {
     color: rgba(255, 255, 255, 0.95);
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    margin-bottom: 6px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 8px;
     font-weight: 500;
 }
 
 /* Yellow disclaimer box */
 .server-delay-note {
     background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-    padding: 10px 12px;
+    padding: 12px 14px;
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 12px 0;
     border-left: 4px solid var(--warning);
     text-align: left;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
@@ -1795,8 +1795,8 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 .server-delay-note strong {
     color: #D97706;
     display: block;
-    margin-bottom: 5px;
-    font-size: 0.8125rem;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: -0.2px;
 }
@@ -1804,38 +1804,38 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 /* Add warning emoji via CSS */
 .server-delay-note strong::before {
     content: '⚠️ ';
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
 }
 
 .server-delay-note p {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--gray-800);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
     font-weight: 500;
 }
 
 /* Thank you text */
 .server-delay-thanks {
-    font-size: 0.75rem !important;
+    font-size: 0.8125rem !important;
     opacity: 0.9;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
 }
 
 /* Buttons */
 .server-delay-buttons {
     display: flex;
-    gap: 8px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 14px;
     justify-content: center;
 }
 
 .server-delay-btn {
     flex: 1;
-    padding: 8px 16px;
+    padding: 10px 18px;
     border: none;
     border-radius: 10px;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1875,11 +1875,11 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 /* Timer */
 .server-delay-timer {
     color: white;
-    font-size: 0.75rem;
-    margin-top: 8px;
+    font-size: 0.8125rem;
+    margin-top: 10px;
     font-weight: 600;
     background: rgba(255, 255, 255, 0.15);
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 16px;
     display: inline-block;
 }
@@ -1908,41 +1908,41 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     
     .server-delay-content {
         width: auto;
-        padding: 1rem;
+        padding: 1.25rem;
     }
     
     .server-delay-icon {
-        font-size: 32px;
+        font-size: 38px;
     }
     
     .server-delay-content h2 {
-        font-size: 1rem;
+        font-size: 1.125rem;
     }
     
     .server-delay-content > p {
-        font-size: 0.75rem;
+        font-size: 0.8125rem;
     }
     
     .server-delay-note {
-        padding: 8px 10px;
+        padding: 10px 12px;
     }
     
     .server-delay-note strong {
-        font-size: 0.75rem;
+        font-size: 0.8125rem;
     }
     
     .server-delay-note p {
-        font-size: 0.6875rem;
+        font-size: 0.75rem;
     }
     
     .server-delay-buttons {
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
     }
     
     .server-delay-btn {
         width: 100%;
-        padding: 8px 14px;
+        padding: 9px 16px;
     }
 }
 
@@ -1954,25 +1954,29 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     }
     
     .server-delay-content {
-        padding: 0.875rem;
+        padding: 1rem;
         border-radius: 14px;
     }
     
     .server-delay-icon {
-        font-size: 28px;
+        font-size: 34px;
     }
     
     .server-delay-content h2 {
-        font-size: 0.9375rem;
+        font-size: 1rem;
     }
     
     .server-delay-note {
-        padding: 8px;
+        padding: 9px 11px;
+    }
+    
+    .server-delay-note strong {
+        font-size: 0.75rem;
     }
     
     .server-delay-btn {
-        padding: 7px 12px;
-        font-size: 0.75rem;
+        padding: 8px 14px;
+        font-size: 0.8125rem;
     }
 }
 
