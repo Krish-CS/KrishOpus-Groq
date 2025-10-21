@@ -438,7 +438,7 @@ function showServerDelayWarning(onContinue) {
         
         <div class="server-delay-note">
             <strong>First-time delay notice:</strong>
-            <p>Due to server traffic, the first generation may take <strong>30-60 seconds</strong> while our server starts up. <br> Subsequent generations will be much faster!</p>
+            <p>Due to server traffic, the first generation may take <strong>30-60 seconds</strong> while our server starts up. <br><br>Subsequent generations will be much faster!</p>
         </div>
         
         <p class="server-delay-thanks">Thank you for your patience!</p>
