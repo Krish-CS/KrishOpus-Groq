@@ -1,10 +1,11 @@
 /**
- * KrishOpus Frontend v4.1 - COMPLETE & PERFECT + FEEDBACK POPUP FIX
+ * KrishOpus Frontend v4.2 - SERVER DELAY WARNING ADDED
  * ✅ All Requirements Satisfied
  * ✅ Audio plays ONCE (full duration)
  * ✅ 100% Opus Backend Compatible
  * ✅ Professional New Year Modal + Themed Feedback Popup
  * ✅ FIXED: Feedback popup now triggers after download button appears
+ * ✅ NEW: Server delay warning popup before generation
  */
 
 const API_BASE_URL = 'https://krishopus.onrender.com';
@@ -37,10 +38,9 @@ function checkAndApplySeasonalEffects() {
     if (!seasonalConfig) return;
     
     const today = new Date();
-    const currentMonth = today.getMonth(); // 0 = January
+    const currentMonth = today.getMonth();
     const currentDay = today.getDate();
     
-    // Check New Year
     if (seasonalConfig.new_year && seasonalConfig.new_year.enabled) {
         const ny = seasonalConfig.new_year;
         if (currentMonth === ny.start_month && 
@@ -55,19 +55,15 @@ function checkAndApplySeasonalEffects() {
 function applyNewYearEffects(config) {
     console.log('🎉 Applying New Year effects!');
     
-    // Create professional modal
     const modal = document.createElement('div');
     modal.id = 'new-year-modal';
     modal.className = 'new-year-modal';
     modal.innerHTML = `
         <div class="new-year-modal-content">
-            <!-- Animated Fireworks/Chakras in Corners -->
             <div class="firework firework-tl"></div>
             <div class="firework firework-tr"></div>
             <div class="firework firework-bl"></div>
             <div class="firework firework-br"></div>
-            
-            <!-- Content -->
             <div class="new-year-emoji">🎆</div>
             <h1 class="new-year-title">HAPPY NEW YEAR</h1>
             <h2 class="new-year-subtitle">2026</h2>
@@ -82,16 +78,12 @@ function applyNewYearEffects(config) {
     
     document.body.appendChild(modal);
     
-    // Show modal after splash screen (wait 500ms)
     setTimeout(() => {
         modal.classList.add('show');
-        
-        // Trigger confetti in background
         triggerNewYearConfetti();
     }, 500);
 }
 
-// Close New Year modal
 window.closeNewYearModal = function() {
     const modal = document.getElementById('new-year-modal');
     if (modal) {
@@ -102,7 +94,6 @@ window.closeNewYearModal = function() {
     }
 };
 
-// New Year specific confetti (more intense than regular)
 function triggerNewYearConfetti() {
     const canvas = confettiCanvas;
     const ctx = canvas.getContext('2d');
@@ -115,7 +106,6 @@ function triggerNewYearConfetti() {
     const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
     const emojis = ['🎉', '🎊', '⭐', '✨', '🎆', '🎇', '💫'];
     
-    // Create 200 confetti pieces for New Year (more than regular)
     for (let i = 0; i < 200; i++) {
         confetti.push({
             x: Math.random() * canvas.width,
@@ -127,7 +117,7 @@ function triggerNewYearConfetti() {
             tilt: Math.random() * 10 - 10,
             tiltAngleIncremental: Math.random() * 0.1 + 0.05,
             tiltAngle: 0,
-            useEmoji: Math.random() > 0.7 // 30% chance of emoji
+            useEmoji: Math.random() > 0.7
         });
     }
     
@@ -166,7 +156,6 @@ function triggerNewYearConfetti() {
     draw();
 }
 
-// Show feedback popup (YouTube link) - THEMED VERSION
 function showFeedbackPopup() {
     if (!seasonalConfig || !seasonalConfig.feedback || !seasonalConfig.feedback.enabled) {
         console.log('⚠️ Feedback popup disabled or not configured');
@@ -201,18 +190,15 @@ function showFeedbackPopup() {
     
     document.body.appendChild(popup);
     
-    // Animate in
     setTimeout(() => {
         popup.classList.add('show');
     }, 100);
     
-    // Auto-hide after 20 seconds
     setTimeout(() => {
         closeFeedbackPopup();
     }, 20000);
 }
 
-// Close feedback popup
 window.closeFeedbackPopup = function() {
     const popup = document.getElementById('feedback-popup');
     if (popup) {
@@ -271,12 +257,10 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 // ✅ SPLASH SCREEN (15 SEC) + AUDIO PLAYS ONCE
 // ========================================
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ KrishOpus v4.1 Loading...');
+    console.log('✅ KrishOpus v4.2 Loading...');
     
-    // ✅ Load seasonal effects first
     loadSeasonalConfig();
     
-    // ✅ FIX: Audio plays ONCE (no loop) on user interaction
     const playAudioOnce = () => {
         if (!audioInitialized) {
             splashAudio.play().then(() => {
@@ -288,23 +272,19 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // Try to play immediately
     playAudioOnce();
     
-    // Also try on first click/touch anywhere (browser policy)
     document.addEventListener('click', playAudioOnce, { once: true });
     document.addEventListener('touchstart', playAudioOnce, { once: true });
     
-    // Hide splash after 15 seconds
     setTimeout(() => {
         splashScreen.classList.add('fade-out');
         mainContent.classList.add('show');
         
         setTimeout(() => {
             splashScreen.style.display = 'none';
-            // Audio will naturally stop when it finishes (no loop)
         }, 1000);
-    }, 15000); // 15 SECONDS
+    }, 15000);
     
     setupEventListeners();
     checkBackend();
@@ -314,7 +294,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // SETUP EVENT LISTENERS
 // ========================================
 function setupEventListeners() {
-    // File upload
     templateInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -331,10 +310,8 @@ function setupEventListeners() {
         }
     });
     
-    // Form submit
     assignmentForm.addEventListener('submit', handleGenerate);
     
-    // Navigation
     refineBtn.addEventListener('click', () => {
         previewSection.style.display = 'none';
         chatSection.style.display = 'block';
@@ -347,23 +324,19 @@ function setupEventListeners() {
         previewSection.scrollIntoView({ behavior: 'smooth' });
     });
     
-    // Chat
     chatSendBtn.addEventListener('click', handleChat);
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleChat();
     });
     
-    // Finalize
     finalizeBtn.addEventListener('click', handleFinalize);
     
-    // Reset
     generateAnotherBtn.addEventListener('click', resetAll);
     retryBtn.addEventListener('click', () => {
         errorSection.style.display = 'none';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     
-    // Video modal
     videoBtn.addEventListener('click', () => {
         videoModal.classList.add('show');
         videoIframe.src = 'https://youtu.be/-RkfhTlgBnE?si=faOCDjVxBBud5ato';
@@ -450,7 +423,82 @@ function triggerConfetti() {
 }
 
 // ========================================
-// GENERATE ASSIGNMENT
+// ✅ NEW: SERVER DELAY WARNING POPUP
+// ========================================
+function showServerDelayWarning(onContinue) {
+    const modal = document.createElement('div');
+    modal.id = 'server-delay-modal';
+    modal.className = 'server-delay-modal';
+    
+    modal.innerHTML = `
+        <div class="server-delay-content">
+            <div class="server-delay-icon">⏳</div>
+            <h2>Just a heads up!</h2>
+            <p>Your assignment is being generated using AI technology.</p>
+            
+            <div class="server-delay-note">
+                <strong>⚠️ First-time delay notice:</strong>
+                Due to server traffic, the first generation may take <strong>30-60 seconds</strong> while our server starts up. Subsequent generations will be much faster!
+            </div>
+            
+            <p style="font-size: 14px; opacity: 0.9;">
+                Thank you for your patience! 🙏
+            </p>
+            
+            <div class="server-delay-buttons">
+                <button class="server-delay-btn primary" onclick="continueGeneration()">
+                    Continue ✨
+                </button>
+                <button class="server-delay-btn secondary" onclick="cancelGeneration()">
+                    Cancel
+                </button>
+            </div>
+            
+            <div class="server-delay-timer">
+                Auto-continuing in <span id="countdown">10</span>s...
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 100);
+    
+    let timeLeft = 10;
+    const countdownEl = document.getElementById('countdown');
+    const countdown = setInterval(() => {
+        timeLeft--;
+        if (countdownEl) {
+            countdownEl.textContent = timeLeft;
+        }
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            continueGeneration();
+        }
+    }, 1000);
+    
+    window.continueGeneration = () => {
+        clearInterval(countdown);
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+        onContinue();
+    };
+    
+    window.cancelGeneration = () => {
+        clearInterval(countdown);
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    };
+}
+
+// ========================================
+// GENERATE ASSIGNMENT (MODIFIED)
 // ========================================
 async function handleGenerate(e) {
     e.preventDefault();
@@ -466,6 +514,14 @@ async function handleGenerate(e) {
         return;
     }
     
+    // ✅ NEW: Show server delay warning FIRST
+    showServerDelayWarning(() => {
+        startGenerating(templateFile);
+    });
+}
+
+// ✅ NEW: Separated generation logic
+async function startGenerating(templateFile) {
     isProcessing = true;
     
     const formData = new FormData();
@@ -498,7 +554,6 @@ async function handleGenerate(e) {
         currentTopic = result.topic;
         currentSubject = result.subject;
         
-        // Trigger confetti
         setTimeout(() => {
             triggerConfetti();
         }, 500);
@@ -685,11 +740,9 @@ function showDownload(result) {
     downloadLink.download = result.filename;
     downloadLink.textContent = `📥 Download ${result.filename}`;
     
-    // ✅ Play download audio ONCE on click
     downloadLink.onclick = async (e) => {
         e.preventDefault();
         
-        // Play download sound (will play once)
         downloadAudio.play().then(() => {
             console.log('✅ Download audio playing');
         }).catch(err => {
@@ -726,7 +779,6 @@ function showDownload(result) {
     
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    // ✅ FIXED: Show feedback popup when download button appears (1.5 seconds delay)
     setTimeout(() => {
         showFeedbackPopup();
     }, 1500);
@@ -820,12 +872,13 @@ function resetAll() {
 // ========================================
 console.log(`
 ╔═══════════════════════════════════════════╗
-║    🎓 KrishOpus v4.1 - PERFECT           ║
+║    🎓 KrishOpus v4.2 - PERFECT           ║
 ║    ✅ All Requirements Complete          ║
 ║    ✅ Audio plays ONCE (no loop)         ║
 ║    ✅ Professional New Year Modal        ║
 ║    ✅ Themed Feedback Popup              ║
 ║    ✅ FIXED: Feedback triggers on DL     ║
+║    ✅ NEW: Server delay warning          ║
 ║    ✅ 100% Backend Compatible            ║
 ╚═══════════════════════════════════════════╝
 `);
