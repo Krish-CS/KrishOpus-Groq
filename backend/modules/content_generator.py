@@ -1,5 +1,7 @@
 """
-Content Generator v6.0 - ULTRA SMART AI CHAT WITH NATURAL LANGUAGE UNDERSTANDING
+Content Generator v6.1 - ULTRA SMART AI CHAT WITH NATURAL LANGUAGE UNDERSTANDING
+✅ FIXED: Compatible with GroqClient.generate_text()
+✅ FIXED: Method name refine_with_chat (not refine_via_chat)
 ✅ Handles ANY natural language request
 ✅ "Keep objective in 30 words"
 ✅ "Change references to only 7"
@@ -17,7 +19,7 @@ class ContentGenerator:
     def __init__(self, groq_client):
         """Initialize with Groq client"""
         self.groq = groq_client
-        print(f"✅ ContentGenerator v6.0 initialized (Advanced NLP)")
+        print(f"✅ ContentGenerator v6.1 initialized (Advanced NLP + Fixed)")
     
     def generate_full_assignment(
         self,
@@ -44,7 +46,8 @@ class ContentGenerator:
                     section_name=section,
                     topic=topic,
                     subject=subject,
-                    max_words=110
+                    max_words=110,
+                    temperature=temperature
                 )
             
             generated[section] = content
@@ -52,6 +55,7 @@ class ContentGenerator:
         
         return generated
     
+    # FIXED: Changed from refine_via_chat to refine_with_chat
     def refine_with_chat(
         self,
         user_prompt: str,
@@ -380,8 +384,9 @@ Format each reference with:
 Generate EXACTLY {target_count} references, no more, no less."""
 
         try:
-            response = self.groq.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
+            # FIXED: Using generate_text instead of chat_completion
+            response = self.groq.generate_text(
+                prompt=prompt,
                 temperature=0.7,
                 max_tokens=2000
             )
@@ -416,8 +421,9 @@ Format in IEEE style:
 Include mix of journals, books, and online sources."""
 
         try:
-            response = self.groq.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
+            # FIXED: Using generate_text
+            response = self.groq.generate_text(
+                prompt=prompt,
                 temperature=0.7,
                 max_tokens=1500
             )
@@ -427,7 +433,7 @@ Include mix of journals, books, and online sources."""
             return self._generate_fallback_references(topic, count)
     
     # ========================================
-    # SECTION REGENERATION
+    # SECTION GENERATION & REGENERATION
     # ========================================
     
     def _regenerate_section_with_context(
@@ -457,8 +463,9 @@ Write in proper paragraph format (not bullet points unless requested).
 Be specific and academic in tone."""
 
         try:
-            response = self.groq.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
+            # FIXED: Using generate_text
+            response = self.groq.generate_text(
+                prompt=prompt,
                 temperature=0.7,
                 max_tokens=2000 if not max_words else max(500, max_words * 2)
             )
@@ -482,7 +489,8 @@ Be specific and academic in tone."""
         section_name: str,
         topic: str,
         subject: str,
-        max_words: int = 110
+        max_words: int = 110,
+        temperature: float = 0.7
     ) -> str:
         """Generate content for a section"""
         prompt = f"""Write the "{section_name}" section for a {subject} assignment about "{topic}".
@@ -492,9 +500,10 @@ Use proper paragraph format (not bullet points).
 Be specific and academic."""
 
         try:
-            response = self.groq.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
+            # FIXED: Using generate_text
+            response = self.groq.generate_text(
+                prompt=prompt,
+                temperature=temperature,
                 max_tokens=500
             )
             return response.strip()
@@ -568,8 +577,9 @@ User question: {user_prompt}
 Provide a helpful response."""
 
         try:
-            response = self.groq.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
+            # FIXED: Using generate_text
+            response = self.groq.generate_text(
+                prompt=prompt,
                 temperature=0.7,
                 max_tokens=500
             )
