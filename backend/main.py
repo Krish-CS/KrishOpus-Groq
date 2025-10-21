@@ -255,7 +255,7 @@ async def chat_refinement(request: ChatRequest):
         print(f"      Available sections: {list(session['sections'].keys())}")
         
         # Get AI response and updated sections
-        response_text, updated_sections = content_generator.refine_via_chat(
+        response_text, updated_sections = content_generator.refine_with_chat(
             user_prompt=request.user_prompt,
             current_sections=session["sections"],
             topic=session["topic"],
