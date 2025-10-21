@@ -431,34 +431,33 @@ function showServerDelayWarning(onContinue) {
     modal.className = 'server-delay-modal';
     
     modal.innerHTML = `
-        <div class="server-delay-content">
-            <div class="server-delay-icon">⏳</div>
-            <h2>Just a heads up!</h2>
-            <p>Your assignment is being generated using AI technology.</p>
-            
-            <div class="server-delay-note">
-                <strong>⚠️ First-time delay notice:</strong>
-                Due to server traffic, the first generation may take <strong>30-60 seconds</strong> while our server starts up. Subsequent generations will be much faster!
-            </div>
-            
-            <p style="font-size: 14px; opacity: 0.9;">
-                Thank you for your patience! 🙏
-            </p>
-            
-            <div class="server-delay-buttons">
-                <button class="server-delay-btn primary" onclick="continueGeneration()">
-                    Continue ✨
-                </button>
-                <button class="server-delay-btn secondary" onclick="cancelGeneration()">
-                    Cancel
-                </button>
-            </div>
-            
-            <div class="server-delay-timer">
-                Auto-continuing in <span id="countdown">10</span>s...
-            </div>
+    <div class="server-delay-content">
+        <div class="server-delay-icon">⏳</div>
+        <h2>Just a heads up!</h2>
+        <p>Your assignment is being generated using Krish Opus AI.</p>
+        
+        <div class="server-delay-note">
+            <strong>First-time delay notice:</strong>
+            <p>Due to server traffic, the first generation may take <strong>30-60 seconds</strong> while our server starts up. <br> Subsequent generations will be much faster!</p>
         </div>
-    `;
+        
+        <p class="server-delay-thanks">Thank you for your patience!</p>
+        
+        <div class="server-delay-buttons">
+            <button class="server-delay-btn primary" onclick="continueGeneration()">
+                Continue
+            </button>
+            <button class="server-delay-btn secondary" onclick="cancelGeneration()">
+                Cancel
+            </button>
+        </div>
+        
+        <div class="server-delay-timer">
+            Auto-continuing in <span id="countdown">10</span>s...
+        </div>
+    </div>
+`;
+
     
     document.body.appendChild(modal);
     
