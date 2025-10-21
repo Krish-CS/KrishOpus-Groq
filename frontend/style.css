@@ -1486,93 +1486,94 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 }
 
 /* ========================================
-   SERVER DELAY WARNING POPUP (TURQUOISE THEME)
+   SERVER DELAY WARNING POPUP (SIDE POPUP STYLE)
    ======================================== */
 
 .server-delay-modal {
-    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    z-index: 10000;
-    animation: fadeIn 0.3s ease;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(100px) scale(0.9);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .server-delay-modal.show {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 .server-delay-content {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    padding: 40px;
     border-radius: 20px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(48, 213, 200, 0.4), 0 0 0 3px rgba(48, 213, 200, 0.3);
-    animation: slideUp 0.4s ease;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(48, 213, 200, 0.4), 0 0 0 3px rgba(48, 213, 200, 0.2);
+    width: 380px;
     position: relative;
+    text-align: center;
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .server-delay-icon {
-    font-size: 60px;
-    margin-bottom: 20px;
+    font-size: 50px;
+    margin-bottom: 15px;
     animation: pulse 2s infinite;
     filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.3));
 }
 
 .server-delay-content h2 {
     color: white;
-    font-size: 28px;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
     font-weight: 700;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .server-delay-content p {
     color: rgba(255, 255, 255, 0.95);
-    font-size: 16px;
+    font-size: 0.9rem;
     line-height: 1.6;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .server-delay-note {
     background: rgba(255, 255, 255, 0.15);
-    padding: 15px;
+    padding: 12px;
     border-radius: 12px;
-    margin: 20px 0;
+    margin: 15px 0;
     border-left: 4px solid var(--warning);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .server-delay-note strong {
     color: var(--warning);
     display: block;
-    margin-bottom: 8px;
-    font-size: 15px;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.server-delay-note p {
+    font-size: 0.8125rem;
+    margin: 0;
 }
 
 .server-delay-buttons {
     display: flex;
-    gap: 15px;
-    margin-top: 25px;
+    gap: 10px;
+    margin-top: 20px;
     justify-content: center;
 }
 
 .server-delay-btn {
-    padding: 12px 30px;
+    flex: 1;
+    padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1581,12 +1582,12 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 .server-delay-btn.primary {
     background: white;
     color: var(--primary);
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
 }
 
 .server-delay-btn.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
     background: var(--gray-50);
 }
 
@@ -1605,36 +1606,44 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 
 .server-delay-timer {
     color: var(--warning);
-    font-size: 14px;
-    margin-top: 15px;
+    font-size: 0.8125rem;
+    margin-top: 12px;
     font-weight: 600;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    50% {
+        transform: scale(1.1);
     }
 }
 
 /* Responsive for Server Delay Popup */
 @media (max-width: 768px) {
+    .server-delay-modal {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+    }
+    
     .server-delay-content {
-        padding: 30px 20px;
-        max-width: 90%;
+        width: auto;
+        padding: 1.5rem;
     }
     
     .server-delay-icon {
-        font-size: 50px;
+        font-size: 45px;
     }
     
     .server-delay-content h2 {
-        font-size: 24px;
+        font-size: 1.25rem;
+    }
+    
+    .server-delay-content p {
+        font-size: 0.875rem;
     }
     
     .server-delay-buttons {
@@ -1647,28 +1656,36 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 }
 
 @media (max-width: 480px) {
+    .server-delay-modal {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+    }
+    
     .server-delay-content {
-        padding: 25px 15px;
+        padding: 1.25rem;
+        border-radius: 16px;
     }
     
     .server-delay-icon {
-        font-size: 45px;
+        font-size: 40px;
     }
     
     .server-delay-content h2 {
-        font-size: 22px;
-    }
-    
-    .server-delay-content p {
-        font-size: 15px;
+        font-size: 1.125rem;
     }
     
     .server-delay-note {
-        padding: 12px;
+        padding: 10px;
     }
     
     .server-delay-note strong {
-        font-size: 14px;
+        font-size: 0.8125rem;
+    }
+    
+    .server-delay-btn {
+        padding: 9px 16px;
+        font-size: 0.875rem;
     }
 }
 
