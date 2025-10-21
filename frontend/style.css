@@ -1486,7 +1486,7 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
 }
 
 /* ========================================
-   SERVER DELAY WARNING POPUP (PROFESSIONAL & ATTRACTIVE)
+   SERVER DELAY WARNING POPUP (BOTTOM-RIGHT CORNER)
    ======================================== */
 
 .server-delay-modal {
@@ -1497,11 +1497,13 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     opacity: 0;
     transform: translateY(100px) scale(0.9);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
 }
 
 .server-delay-modal.show {
     opacity: 1;
     transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
 
 .server-delay-content {
@@ -1539,7 +1541,6 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     font-weight: 500;
 }
 
-/* 🎨 DISCLAIMER BOX - YELLOW GRADIENT STYLE */
 .server-delay-note {
     background: linear-gradient(135deg, #FEF3C7, #FDE68A);
     padding: 15px 18px;
@@ -1578,7 +1579,6 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     color: #D97706;
 }
 
-/* BUTTONS */
 .server-delay-buttons {
     display: flex;
     gap: 12px;
@@ -1652,7 +1652,6 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label {
     }
 }
 
-/* Responsive for Server Delay Popup */
 @media (max-width: 768px) {
     .server-delay-modal {
         bottom: 15px;
