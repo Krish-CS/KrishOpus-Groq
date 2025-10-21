@@ -411,7 +411,7 @@ Generate EXACTLY {target_count} references now:"""
             print(f"    ⚠️ Error: {e}")
             return current_content
     
-    def _generate_references(self, topic: str, subject: str, count: int = 10) -> str:
+    def _generate_references(self, topic: str, subject: str, count: int = 5) -> str:
         """Generate references for initial document"""
         prompt = f"""Generate EXACTLY {count} academic references for a {subject} assignment about "{topic}".
 
