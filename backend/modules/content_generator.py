@@ -1,7 +1,9 @@
 """
-Content Generator v6.1 - ULTRA SMART AI CHAT WITH NATURAL LANGUAGE UNDERSTANDING
+Content Generator v6.2 - ULTRA SMART AI CHAT WITH CLEAN REFERENCES
 ✅ FIXED: Compatible with GroqClient.generate_text()
 ✅ FIXED: Method name refine_with_chat (not refine_via_chat)
+✅ FIXED: Clean reference formatting (1., 2., 3. NOT [1], [2], [3])
+✅ FIXED: Removes AI introductory text
 ✅ Handles ANY natural language request
 ✅ "Keep objective in 30 words"
 ✅ "Change references to only 7"
@@ -13,13 +15,14 @@ Content Generator v6.1 - ULTRA SMART AI CHAT WITH NATURAL LANGUAGE UNDERSTANDING
 import re
 from typing import Dict, List, Tuple, Optional
 
+
 class ContentGenerator:
     """Ultra Smart Content Generator with Advanced NLP"""
     
     def __init__(self, groq_client):
         """Initialize with Groq client"""
         self.groq = groq_client
-        print(f"✅ ContentGenerator v6.1 initialized (Advanced NLP + Fixed)")
+        print(f"✅ ContentGenerator v6.2 initialized (Advanced NLP + Clean References)")
     
     def generate_full_assignment(
         self,
@@ -55,7 +58,6 @@ class ContentGenerator:
         
         return generated
     
-    # FIXED: Changed from refine_via_chat to refine_with_chat
     def refine_with_chat(
         self,
         user_prompt: str,
@@ -68,24 +70,17 @@ class ContentGenerator:
         """
         print(f"\n💬 Chat Request: {user_prompt}")
         
-        # Detect intent
         intent = self._detect_intent(user_prompt, current_sections)
-        
         print(f"   🧠 Detected Intent: {intent}")
         
-        # Route to appropriate handler
         if intent == "add_section":
             return self._handle_add_section(user_prompt, current_sections, topic, subject)
-        
         elif intent == "delete_section":
             return self._handle_delete_section(user_prompt, current_sections)
-        
         elif intent == "modify_content":
             return self._handle_content_modification(user_prompt, current_sections, topic, subject)
-        
         elif intent == "general_question":
             return self._handle_general_question(user_prompt, current_sections, topic, subject)
-        
         else:
             return "I'm not sure what you want to do. Please try rephrasing.", {}
     
@@ -93,48 +88,39 @@ class ContentGenerator:
         """Detect user's intent from prompt"""
         prompt_lower = user_prompt.lower()
         
-        # Add section intent
         if any(kw in prompt_lower for kw in ['add', 'insert', 'include', 'create new']):
             return "add_section"
         
-        # Delete section intent
         if any(kw in prompt_lower for kw in ['remove', 'delete', 'drop']):
             return "delete_section"
         
-        # Modify content intent (most common)
         if any(kw in prompt_lower for kw in [
             'change', 'modify', 'rewrite', 'expand', 'shorten', 'improve',
             'make', 'keep', 'reduce', 'increase', 'words', 'references'
         ]):
             return "modify_content"
         
-        # General question
         return "general_question"
     
     def _detect_target_sections(self, user_prompt: str, current_sections: Dict[str, str]) -> List[str]:
         """Detect which sections user is referring to"""
         prompt_lower = user_prompt.lower()
         
-        # Check for "all" or "everything"
         if any(kw in prompt_lower for kw in ['all', 'everything', 'entire', 'whole']):
             return list(current_sections.keys())
         
-        # Check each section name
         target_sections = []
         for section_name in current_sections.keys():
             section_lower = section_name.lower()
             
-            # Direct mention
             if section_lower in prompt_lower:
                 target_sections.append(section_name)
                 continue
             
-            # Partial matches
             section_words = section_lower.split()
             if any(word in prompt_lower for word in section_words if len(word) > 3):
                 target_sections.append(section_name)
         
-        # If no sections detected, assume first non-reference section
         if not target_sections:
             for section_name in current_sections.keys():
                 if 'reference' not in section_name.lower():
@@ -159,29 +145,24 @@ class ContentGenerator:
         """
         prompt_lower = user_prompt.lower()
         
-        # Pattern 1: "X words" or "X word"
         if context == "words":
             match = re.search(r'(\d+)\s*words?', prompt_lower)
             if match:
                 return int(match.group(1))
         
-        # Pattern 2: "to X" or "to only X" (for references)
         if context == "references":
             match = re.search(r'to\s+(?:only\s+)?(\d+)', prompt_lower)
             if match:
                 return int(match.group(1))
             
-            # Pattern: "keep X references" or "X references"
             match = re.search(r'(?:keep\s+)?(\d+)\s+references?', prompt_lower)
             if match:
                 return int(match.group(1))
         
-        # Pattern 3: "in X" (keep objective in 30 words)
         match = re.search(r'in\s+(\d+)', prompt_lower)
         if match:
             return int(match.group(1))
         
-        # Pattern 4: Generic "X" after action verbs
         match = re.search(r'(?:to|make|change|rewrite|expand|write|keep)\s+(?:only\s+)?(\d+)', prompt_lower)
         if match:
             return int(match.group(1))
@@ -195,16 +176,13 @@ class ContentGenerator:
         """
         prompt_lower = user_prompt.lower()
         
-        # Detect target sections
         target_sections = self._detect_target_sections(user_prompt, current_sections)
         
-        # Detect if references section
         is_reference_request = any(
             'reference' in section.lower() 
             for section in target_sections
         ) or 'reference' in prompt_lower
         
-        # Extract appropriate number based on context
         if is_reference_request:
             requested_number = self._extract_number_from_prompt(user_prompt, context="references")
             number_type = "references"
@@ -212,7 +190,6 @@ class ContentGenerator:
             requested_number = self._extract_number_from_prompt(user_prompt, context="words")
             number_type = "words"
         
-        # Detect action type
         is_expansion = any(kw in prompt_lower for kw in [
             'expand', 'longer', 'more details', 'add more', 'elaborate', 'increase'
         ])
@@ -223,7 +200,6 @@ class ContentGenerator:
         
         is_keep = 'keep' in prompt_lower
         
-        # Determine intent
         if requested_number:
             intent = "specific_target"
         elif is_expansion:
@@ -265,7 +241,6 @@ class ContentGenerator:
         - "Rewrite introduction to 150 words"
         """
         
-        # Parse user request
         request = self._parse_user_request(user_prompt, current_sections)
         
         print(f"\n  🧠 Parsed Request:")
@@ -274,26 +249,20 @@ class ContentGenerator:
         if request['requested_number']:
             print(f"     Target: {request['requested_number']} {request['number_type']}")
         
-        # Determine target count
         if request['requested_number']:
             if request['number_type'] == "references":
-                # References count request
                 target_count = request['requested_number']
-                max_words = None  # References don't use word limit
+                max_words = None
             else:
-                # Word count request
                 max_words = request['requested_number']
                 target_count = None
         elif request['intent'] == "expand":
-            # No limit expansion
             max_words = None
             target_count = None
         elif request['intent'] == "reduce":
-            # Reduce to 50% of current
             max_words = 75
             target_count = None
         else:
-            # Default
             max_words = 150
             target_count = None
         
@@ -307,7 +276,6 @@ class ContentGenerator:
             
             current_content = current_sections[section_name]
             
-            # Handle references specially
             if request['is_reference_request'] and target_count:
                 new_content = self._regenerate_references(
                     section_name=section_name,
@@ -317,7 +285,6 @@ class ContentGenerator:
                     target_count=target_count
                 )
             else:
-                # Handle regular content modification
                 new_content = self._regenerate_section_with_context(
                     section_name=section_name,
                     current_content=current_content,
@@ -329,20 +296,18 @@ class ContentGenerator:
             
             updated_sections[section_name] = new_content
             
-            # Log result
             if request['is_reference_request']:
-                ref_count = len([line for line in new_content.split('\n') if line.strip().startswith(('[', '1', '2', '3', '4', '5', '6', '7', '8', '9'))])
+                ref_count = len([line for line in new_content.split('\n') if re.match(r'^\d+\.', line.strip())])
                 print(f"  ✓ Modified {section_name} ({ref_count} references)")
             else:
                 word_count = len(new_content.split())
                 print(f"  ✓ Modified {section_name} ({word_count} words)")
         
-        # Generate response
         if updated_sections:
             response = f"✅ Modified {len(updated_sections)} section(s):\n"
             for sec in updated_sections.keys():
                 if request['is_reference_request']:
-                    ref_count = len([line for line in updated_sections[sec].split('\n') if line.strip().startswith(('[', '1', '2', '3', '4', '5', '6', '7', '8', '9'))])
+                    ref_count = len([line for line in updated_sections[sec].split('\n') if re.match(r'^\d+\.', line.strip())])
                     response += f"  - {sec} ({ref_count} references)\n"
                 else:
                     word_count = len(updated_sections[sec].split())
@@ -352,7 +317,56 @@ class ContentGenerator:
             return "No sections were modified.", {}
     
     # ========================================
-    # REFERENCE GENERATION
+    # REFERENCE CLEANING (NEW IN v6.2)
+    # ========================================
+    
+    def _clean_reference_content(self, content: str) -> str:
+        """
+        Clean AI-generated references
+        Converts: [1] Author... → 1. Author...
+        Removes: Introductory AI text
+        """
+        if not content:
+            return content
+        
+        lines = content.split('\n')
+        cleaned_lines = []
+        
+        for line in lines:
+            line = line.strip()
+            
+            if not line:
+                continue
+            
+            # Skip AI introductory phrases
+            skip_phrases = [
+                'here are',
+                'here is',
+                'i have generated',
+                'below are',
+                'following are',
+                'in ieee style',
+                'in apa style',
+                'for an ai assignment',
+                'about "',
+                'references:',
+                'bibliography:'
+            ]
+            
+            if any(phrase in line.lower() for phrase in skip_phrases):
+                continue
+            
+            # Convert [X] to X.
+            line = re.sub(r'^\[(\d+)\]\s*', r'\1. ', line)
+            
+            # Keep lines that start with numbers or are continuations
+            if re.match(r'^\d+\.', line) or (cleaned_lines and not line.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '['))):
+                cleaned_lines.append(line)
+        
+        return '\n'.join(cleaned_lines).strip()
+    
+    # ========================================
+    # REFERENCE GENERATION (UPDATED IN v6.2)
     # ========================================
     
     def _regenerate_references(
@@ -363,71 +377,64 @@ class ContentGenerator:
         subject: str,
         target_count: int
     ) -> str:
-        """
-        Generate references section with specific count
-        """
+        """Generate references section with specific count"""
         prompt = f"""Generate EXACTLY {target_count} academic references for a {subject} assignment about "{topic}".
 
-Current references:
-{current_content}
+CRITICAL FORMAT REQUIREMENTS:
+- Use simple numbered format: 1., 2., 3. (NOT [1], [2], [3])
+- DO NOT include any introductory text like "Here are X references"
+- Start directly with reference number 1
+- Format: 1. Author, A., "Title," Journal, Vol. X, pp. XX-YY, Year.
 
-Generate {target_count} properly formatted references in IEEE/APA style.
-Include a mix of:
-- Journal articles
-- Books
-- Conference papers
-- Online sources
-
-Format each reference with:
-[1] Author(s), "Title," Journal/Source, Vol. X, No. Y, pp. XX-YY, Year.
-
-Generate EXACTLY {target_count} references, no more, no less."""
+Generate EXACTLY {target_count} references now:"""
 
         try:
-            # FIXED: Using generate_text instead of chat_completion
             response = self.groq.generate_text(
                 prompt=prompt,
                 temperature=0.7,
                 max_tokens=2000
             )
             
-            generated = response.strip()
+            cleaned = self._clean_reference_content(response)
             
             # Validate count
-            lines = [line for line in generated.split('\n') if line.strip().startswith(('[', '1', '2', '3', '4', '5', '6', '7', '8', '9'))]
+            ref_lines = [l for l in cleaned.split('\n') if re.match(r'^\d+\.', l.strip())]
             
-            if len(lines) != target_count:
-                # Adjust if needed
-                if len(lines) > target_count:
-                    generated = '\n'.join([line for line in generated.split('\n') if line.strip()][:target_count])
-                else:
-                    # Add more if less
-                    for i in range(len(lines), target_count):
-                        generated += f"\n[{i+1}] Author, A., \"Additional Reference {i+1},\" Journal Name, Vol. 1, pp. 1-10, 2024."
+            if len(ref_lines) != target_count:
+                print(f"    ⚠️ Got {len(ref_lines)} refs instead of {target_count}")
+                if len(ref_lines) > target_count:
+                    cleaned = '\n'.join([l for l in cleaned.split('\n') if l.strip()][:target_count])
             
-            return generated
+            return cleaned
             
         except Exception as e:
-            print(f"    ⚠️ Error generating references: {e}")
+            print(f"    ⚠️ Error: {e}")
             return current_content
     
     def _generate_references(self, topic: str, subject: str, count: int = 10) -> str:
         """Generate references for initial document"""
-        prompt = f"""Generate {count} academic references for a {subject} assignment about "{topic}".
+        prompt = f"""Generate EXACTLY {count} academic references for a {subject} assignment about "{topic}".
 
-Format in IEEE style:
-[1] Author(s), "Title," Journal/Source, Vol. X, No. Y, pp. XX-YY, Year.
+CRITICAL FORMAT REQUIREMENTS:
+- Use simple numbered format: 1., 2., 3. (NOT [1], [2], [3])
+- DO NOT include any introductory text
+- DO NOT say "Here are references" or similar
+- Start directly with reference 1
+- Format: 1. Author, A., "Title," Journal, Vol. X, pp. XX-YY, Year.
 
-Include mix of journals, books, and online sources."""
+Generate {count} references now:"""
 
         try:
-            # FIXED: Using generate_text
             response = self.groq.generate_text(
                 prompt=prompt,
                 temperature=0.7,
                 max_tokens=1500
             )
-            return response.strip()
+            
+            cleaned = self._clean_reference_content(response)
+            
+            return cleaned if cleaned else self._generate_fallback_references(topic, count)
+            
         except Exception as e:
             print(f"⚠️ Error: {e}")
             return self._generate_fallback_references(topic, count)
@@ -445,9 +452,7 @@ Include mix of journals, books, and online sources."""
         subject: str,
         max_words: Optional[int] = 150
     ) -> str:
-        """
-        Regenerate section based on user instruction with word limit control
-        """
+        """Regenerate section based on user instruction with word limit control"""
         word_limit_instruction = f"\n\nIMPORTANT: Write EXACTLY {max_words} words." if max_words else "\n\nWrite in detail with no word limit."
         
         prompt = f"""You are rewriting the "{section_name}" section of a {subject} assignment about "{topic}".
@@ -463,7 +468,6 @@ Write in proper paragraph format (not bullet points unless requested).
 Be specific and academic in tone."""
 
         try:
-            # FIXED: Using generate_text
             response = self.groq.generate_text(
                 prompt=prompt,
                 temperature=0.7,
@@ -472,10 +476,9 @@ Be specific and academic in tone."""
             
             generated = response.strip()
             
-            # Validate word count if specified
             if max_words:
                 actual_words = len(generated.split())
-                if abs(actual_words - max_words) > max_words * 0.2:  # Allow 20% tolerance
+                if abs(actual_words - max_words) > max_words * 0.2:
                     print(f"    ⚠️ Word count mismatch: {actual_words} vs {max_words} target")
             
             return generated
@@ -500,7 +503,6 @@ Use proper paragraph format (not bullet points).
 Be specific and academic."""
 
         try:
-            # FIXED: Using generate_text
             response = self.groq.generate_text(
                 prompt=prompt,
                 temperature=temperature,
@@ -525,7 +527,6 @@ Be specific and academic."""
         """Handle adding new section"""
         prompt_lower = user_prompt.lower()
         
-        # Extract section name
         for word in ['add', 'insert', 'include', 'create']:
             if word in prompt_lower:
                 parts = prompt_lower.split(word, 1)
@@ -535,7 +536,6 @@ Be specific and academic."""
         else:
             section_name = "New Section"
         
-        # Generate content
         content = self._generate_section_content(section_name, topic, subject, max_words=110)
         
         return f"✅ Added section: {section_name}", {section_name: content}
@@ -551,7 +551,7 @@ Be specific and academic."""
         deleted = {}
         for section in target_sections:
             if section in current_sections:
-                deleted[section] = ""  # Mark for deletion
+                deleted[section] = ""
         
         if deleted:
             return f"✅ Marked {len(deleted)} section(s) for removal", deleted
@@ -577,7 +577,6 @@ User question: {user_prompt}
 Provide a helpful response."""
 
         try:
-            # FIXED: Using generate_text
             response = self.groq.generate_text(
                 prompt=prompt,
                 temperature=0.7,
@@ -605,5 +604,5 @@ Provide a helpful response."""
         """Fallback reference generation"""
         refs = []
         for i in range(1, count + 1):
-            refs.append(f"[{i}] Author, A., \"Study on {topic},\" Journal Name, Vol. 1, pp. 1-10, 2024.")
+            refs.append(f"{i}. Author, A., \"Study on {topic},\" Journal Name, Vol. 1, pp. 1-10, 2024.")
         return '\n'.join(refs)

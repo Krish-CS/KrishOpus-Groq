@@ -1,9 +1,10 @@
 /**
- * KrishOpus Frontend v4.0 - COMPLETE & PERFECT + SEASONAL EFFECTS
+ * KrishOpus Frontend v4.1 - COMPLETE & PERFECT + FEEDBACK POPUP FIX
  * ✅ All Requirements Satisfied
  * ✅ Audio plays ONCE (full duration)
  * ✅ 100% Opus Backend Compatible
  * ✅ Professional New Year Modal + Themed Feedback Popup
+ * ✅ FIXED: Feedback popup now triggers after download button appears
  */
 
 const API_BASE_URL = 'https://krishopus.onrender.com';
@@ -168,10 +169,13 @@ function triggerNewYearConfetti() {
 // Show feedback popup (YouTube link) - THEMED VERSION
 function showFeedbackPopup() {
     if (!seasonalConfig || !seasonalConfig.feedback || !seasonalConfig.feedback.enabled) {
+        console.log('⚠️ Feedback popup disabled or not configured');
         return;
     }
     
     const youtubeUrl = seasonalConfig.feedback.youtube_url;
+    
+    console.log('💙 Showing feedback popup');
     
     const popup = document.createElement('div');
     popup.id = 'feedback-popup';
@@ -200,7 +204,7 @@ function showFeedbackPopup() {
     // Animate in
     setTimeout(() => {
         popup.classList.add('show');
-    }, 500);
+    }, 100);
     
     // Auto-hide after 20 seconds
     setTimeout(() => {
@@ -267,7 +271,7 @@ const confettiCanvas = document.getElementById('confetti-canvas');
 // ✅ SPLASH SCREEN (15 SEC) + AUDIO PLAYS ONCE
 // ========================================
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ KrishOpus v4.0 Loading...');
+    console.log('✅ KrishOpus v4.1 Loading...');
     
     // ✅ Load seasonal effects first
     loadSeasonalConfig();
@@ -722,7 +726,7 @@ function showDownload(result) {
     
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    // Show feedback popup when download button appears
+    // ✅ FIXED: Show feedback popup when download button appears (1.5 seconds delay)
     setTimeout(() => {
         showFeedbackPopup();
     }, 1500);
@@ -816,11 +820,12 @@ function resetAll() {
 // ========================================
 console.log(`
 ╔═══════════════════════════════════════════╗
-║    🎓 KrishOpus v4.0 - PERFECT           ║
+║    🎓 KrishOpus v4.1 - PERFECT           ║
 ║    ✅ All Requirements Complete          ║
 ║    ✅ Audio plays ONCE (no loop)         ║
 ║    ✅ Professional New Year Modal        ║
 ║    ✅ Themed Feedback Popup              ║
+║    ✅ FIXED: Feedback triggers on DL     ║
 ║    ✅ 100% Backend Compatible            ║
 ╚═══════════════════════════════════════════╝
 `);
